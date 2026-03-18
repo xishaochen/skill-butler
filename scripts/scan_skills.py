@@ -14,7 +14,7 @@ import os
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, List, List
+from typing import Any, Dict, Optional, Tuple, List
 
 
 # 配置
@@ -38,9 +38,12 @@ L2_SUBCATEGORIES = {
 
 def load_skill_usage() -> Dict[str, Any]:
     """加载技能使用数据"""
-    if SKILL_USAGE_FILE.exists():
-        with open(SKILL_USAGE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+    try:
+        if SKILL_USAGE_FILE.exists():
+            with open(SKILL_USAGE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"⚠️ 加载数据失败: {e}，将使用空数据")
     return {
         "version": "1.0",
         "last_scan": None,
