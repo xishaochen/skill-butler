@@ -22,6 +22,16 @@ SKILL_USAGE_FILE = Path.home() / ".claude" / "skill-usage.json"
 USER_SKILLS_DIR = Path.home() / ".claude" / "skills"
 # 项目级技能目录 - 使用项目根目录而非当前工作目录
 PROJECT_SKILLS_DIR = Path.home() / "PycharmProjects" / "CCAgent" / ".claude" / "skills"
+# ccagent-skills 仓库目录
+CCAGENT_SKILLS_DIR = Path.home() / "ClaudeProjects" / "ccagent-skills"
+
+# 目录结构 → 层级映射（隐式分类）
+DIR_TO_LEVEL = {
+    "L3-smart": "L3-高阶决策技能",
+    "L2-core": "L2-领域核心技能",
+    "L1-utils": "L1-公共技能",
+    "Backup-archived": "已归档",
+}
 
 # 金字塔分类关键词
 L3_KEYWORDS = ["规划", "架构", "治理", "策略", "决策", "顾问", "review", "架构设计", "advisor", "cto", "brainstorm"]
@@ -108,24 +118,55 @@ def extract_skill_metadata(skill_dir: Path) -> Dict[str, Any]:
     return metadata
 
 
-def classify_skill(skill_name: str, description: str) -> str:
-    """智能分类技能层级"""
+def infer_level_from_path(skill_path: str) -> Optional[str]:
+    """从 ccagent-skills 目录结构推断层级"""
+    skill_path = Path(skill_path)
+
+    # 检查是否在 ccagent-skills 仓库中
+    try:
+        relative = skill_path.relative_to(CCAGENT_SKILLS_DIR)
+        # 第一级目录名
+        first_dir = str(relative).split("/")[0] if "/" in str(relative) else str(relative)
+        if first_dir in DIR_TO_LEVEL:
+            return DIR_TO_LEVEL[first_dir]
+    except ValueError:
+        pass  # 不在 ccagent-skills 中
+
+    return None
+
+
+def classify_skill(skill_name: str, description: str, skill_path: str = "") -> str:
+    """智能分类技能层级
+
+    优先级：
+    1. ccagent-skills 目录位置（隐式分类）
+    2. L1 工具技能精确匹配
+    3. L3 高阶决策关键词
+    4. L2 领域核心子分类
+    5. 默认 L1
+    """
     combined = f"{skill_name} {description}".lower()
 
-    # 0. 优先匹配 L1 工具技能（精确匹配技能名）
+    # 0. 优先从目录位置推断
+    if skill_path:
+        dir_level = infer_level_from_path(skill_path)
+        if dir_level:
+            return dir_level
+
+    # 1. 匹配 L1 工具技能（精确匹配技能名）
     if skill_name in L1_TOOL_SKILLS:
         return "L1-公共技能"
 
-    # 1. 匹配 L3 高阶决策关键词
+    # 2. 匹配 L3 高阶决策关键词
     if any(kw.lower() in combined for kw in L3_KEYWORDS):
         return "L3-高阶决策技能"
 
-    # 2. 匹配 L2 领域核心（按子分类）
+    # 3. 匹配 L2 领域核心（按子分类）
     for subcategory, keywords in L2_SUBCATEGORIES.items():
         if any(kw.lower() in combined for kw in keywords):
             return f"L2-领域核心技能/{subcategory}"
 
-    # 3. 默认 L1 公共技能
+    # 4. 默认 L1 公共技能
     return "L1-公共技能"
 
 
@@ -196,8 +237,8 @@ def scan_skills_directory(skills_dir: Path, location: str) -> Dict[str, Any]:
         source_type = detect_source_type(skill_dir)
         github_url, github_hash = get_github_info(skill_dir) if source_type == "github" else (None, None)
 
-        # 分类
-        level = classify_skill(skill_name, metadata["description"])
+        # 分类（传入路径以支持目录结构推断）
+        level = classify_skill(skill_name, metadata["description"], str(skill_dir))
 
         skills[skill_name] = {
             "name": skill_name,
