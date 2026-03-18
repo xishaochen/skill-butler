@@ -64,8 +64,8 @@
 
 ### [3] 📊 查看技能总览
 1. 运行 `python scripts/scan_skills.py` 确保数据最新
-2. 读取 `~/.claude/skill-usage.json`
-3. 按金字塔层级展示技能列表
+2. 运行 `python scripts/show_pyramid.py` 展示金字塔视图
+3. 询问用户是否需要查看某个技能的详细信息
 
 ### [4] 🔄 检查更新
 1. 扫描所有 `source_type=github` 的技能

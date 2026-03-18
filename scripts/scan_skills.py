@@ -20,20 +20,29 @@ from typing import Any, Dict, Optional, Tuple, List
 # 配置
 SKILL_USAGE_FILE = Path.home() / ".claude" / "skill-usage.json"
 USER_SKILLS_DIR = Path.home() / ".claude" / "skills"
-PROJECT_SKILLS_DIR = Path.cwd() / ".claude" / "skills"
+# 项目级技能目录 - 使用项目根目录而非当前工作目录
+PROJECT_SKILLS_DIR = Path.home() / "PycharmProjects" / "CCAgent" / ".claude" / "skills"
 
 # 金字塔分类关键词
-L3_KEYWORDS = ["规划", "架构", "治理", "策略", "决策", "顾问", "review", "架构设计", "advisor", "cto"]
+L3_KEYWORDS = ["规划", "架构", "治理", "策略", "决策", "顾问", "review", "架构设计", "advisor", "cto", "brainstorm"]
 
 L2_SUBCATEGORIES = {
+    "技能管理": ["skill", "vetter", "creator", "find-skills"],  # 技能搜索、创建、审查
     "排查定位": ["排查", "调试", "debug", "诊断", "异常", "error", "detective"],
-    "需求转化开发": ["sql", "开发", "实现", "转化", "需求", "mammoth", "ddl"],
+    "需求转化开发": ["sql", "开发", "实现", "转化", "需求", "mammoth", "ddl", "easydata"],
     "看板改造": ["看板", "bi", "dashboard", "报表", "youshu", "explorer"],
-    "数据分析": ["分析", "统计", "指标", "数据", "analysis", "excel"],
+    "数据分析": ["analysis", "统计", "指标", "数据"],  # 移除 excel，避免误分类
     "内容创作": ["内容", "写作", "content", "writer", "research"],
-    "文档处理": ["pdf", "docx", "xlsx", "pptx", "文档", "document"],
-    "旅游规划": ["旅游", "行程", "travel", "plan", "route", "accommodation"],
 }
+
+# L1 公共技能 - 工具使用类（直接匹配技能名）
+L1_TOOL_SKILLS = [
+    "xlsx", "docx", "pptx", "pdf-anthropic", "pdf-processing-pro", "excel-analysis",
+    "obsidian-markdown", "obsidian-bases", "json-canvas",  # Obsidian 工具
+    "guanbao-parser",  # 解析工具
+    "glm-quota-check",  # 查询工具
+    "pycharm-optimizer",  # IDE 优化工具
+]
 
 
 def load_skill_usage() -> Dict[str, Any]:
@@ -102,6 +111,10 @@ def extract_skill_metadata(skill_dir: Path) -> Dict[str, Any]:
 def classify_skill(skill_name: str, description: str) -> str:
     """智能分类技能层级"""
     combined = f"{skill_name} {description}".lower()
+
+    # 0. 优先匹配 L1 工具技能（精确匹配技能名）
+    if skill_name in L1_TOOL_SKILLS:
+        return "L1-公共技能"
 
     # 1. 匹配 L3 高阶决策关键词
     if any(kw.lower() in combined for kw in L3_KEYWORDS):
