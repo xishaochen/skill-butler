@@ -1,4 +1,4 @@
-# Skill Butler - Claude Code 技能管家
+# Skill Butler - 你的技能管家
 
 > 一个强大的 Claude Code 技能管理元技能，帮助你统一管理用户级和项目级技能
 
