@@ -15,8 +15,8 @@ from pathlib import Path
 from datetime import datetime
 
 # Configuration
-SKILL_HUB_DIR = Path.home() / ".claude" / "skills" / "skill-hub"
-RECORD_SCRIPT = SKILL_HUB_DIR / "scripts" / "record_invocation.py"
+SKILL_BUTLER_DIR = Path.home() / ".claude" / "skills" / "skill-butler"
+RECORD_SCRIPT = SKILL_BUTLER_DIR / "scripts" / "record_invocation.py"
 LOG_FILE = Path.home() / ".claude" / "skill-hooks.log"
 
 

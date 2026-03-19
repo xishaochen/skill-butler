@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-settings.py - skill-hub 设置管理
+settings.py - skill-butler 设置管理
 
 功能：
 1. 查看当前配置
@@ -64,7 +64,7 @@ def view_settings() -> None:
     data = load_config()
     settings = data.get("settings", DEFAULT_CONFIG["settings"])
 
-    print("\n⚙️ skill-hub 设置")
+    print("\n⚙️ skill-butler 设置")
     print("=" * 50)
 
     print("\n📁 目录配置:")

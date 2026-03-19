@@ -1,4 +1,4 @@
-# Skill Hub - 技能管家
+# Skill Butler - 技能管家
 
 > 个人技能管理元技能 - 统一管理用户级和项目级技能
 
@@ -162,11 +162,11 @@
 
 ```bash
 # 扫描所有技能
-python ~/.claude/skills/skill-hub/scripts/scan_skills.py
+python ~/.claude/skills/skill-butler/scripts/scan_skills.py
 
 # 查看技能总览
 cat ~/.claude/skill-usage.json | jq '.skills | keys'
 
 # 检查生命周期状态
-python ~/.claude/skills/skill-hub/scripts/check_lifecycle.py
+python ~/.claude/skills/skill-butler/scripts/check_lifecycle.py
 ```

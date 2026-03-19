@@ -1,4 +1,4 @@
-# Skill Hub - Claude Code 技能管家
+# Skill Butler - Claude Code 技能管家
 
 > 一个强大的 Claude Code 技能管理元技能，帮助你统一管理用户级和项目级技能
 
@@ -31,13 +31,13 @@
 
 ```bash
 # 1. 克隆到 Claude Code 用户技能目录
-git clone https://github.com/xishaochen/skill-hub.git ~/.claude/skills/skill-hub
+git clone https://github.com/xishaochen/skill-butler.git ~/.claude/skills/skill-butler
 
 # 2. 验证安装
-ls ~/.claude/skills/skill-hub/SKILL.md
+ls ~/.claude/skills/skill-butler/SKILL.md
 
 # 3. 初始化技能扫描
-cd ~/.claude/skills/skill-hub && python scripts/scan_skills.py
+cd ~/.claude/skills/skill-butler && python scripts/scan_skills.py
 ```
 
 ### OpenClaw 安装
@@ -51,13 +51,13 @@ cd ~/.claude/skills/skill-hub && python scripts/scan_skills.py
 # 请根据你的 OpenClaw 版本确认实际路径
 
 # 2. 克隆到技能目录
-git clone https://github.com/xishaochen/skill-hub.git ~/.openclaw/skills/skill-hub
+git clone https://github.com/xishaochen/skill-butler.git ~/.openclaw/skills/skill-butler
 
 # 3. 修改配置文件中的路径（如果需要）
 # 编辑 scripts/settings.py，将 USER_SKILLS_DIR 改为你的 OpenClaw 技能目录
 
 # 4. 初始化技能扫描
-cd ~/.openclaw/skills/skill-hub && python scripts/scan_skills.py
+cd ~/.openclaw/skills/skill-butler && python scripts/scan_skills.py
 ```
 
 <details>
@@ -84,7 +84,7 @@ USER_SKILLS_DIR = Path.home() / ".openclaw" / "skills"
 安装完成后，在 Claude Code 中输入：
 
 ```
-/skill-hub
+/skill-butler
 ```
 
 你将看到技能管家主菜单：
@@ -105,7 +105,7 @@ USER_SKILLS_DIR = Path.home() / ".openclaw" / "skills"
 ## 📁 目录结构
 
 ```
-skill-hub/
+skill-butler/
 ├── SKILL.md              # 技能定义文件（必需）
 ├── README.md             # 本文档
 ├── scripts/              # 核心脚本
@@ -266,8 +266,8 @@ skill-hub/
 
 ```bash
 # 克隆仓库
-git clone https://github.com/xishaochen/skill-hub.git
-cd skill-hub
+git clone https://github.com/xishaochen/skill-butler.git
+cd skill-butler
 
 # 运行测试
 python scripts/scan_skills.py
@@ -300,7 +300,7 @@ python scripts/scan_skills.py
 
 - 作者: 阿辰
 - GitHub: [@xishaochen](https://github.com/xishaochen)
-- Issues: [提交问题](https://github.com/xishaochen/skill-hub/issues)
+- Issues: [提交问题](https://github.com/xishaochen/skill-butler/issues)
 
 ---
 
