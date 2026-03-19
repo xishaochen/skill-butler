@@ -24,10 +24,10 @@
 ### 前置要求
 
 - Python 3.8+
-- Claude Code CLI
+- Claude Code CLI 或 OpenClaw
 - Git (用于 GitHub 同步)
 
-### 快速安装
+### Claude Code 安装
 
 ```bash
 # 1. 克隆到 Claude Code 用户技能目录
@@ -35,15 +35,45 @@ git clone https://github.com/xishaochen/skill-hub.git ~/.claude/skills/skill-hub
 
 # 2. 验证安装
 ls ~/.claude/skills/skill-hub/SKILL.md
+
+# 3. 初始化技能扫描
+cd ~/.claude/skills/skill-hub && python scripts/scan_skills.py
 ```
 
-### 安装后配置
+### OpenClaw 安装
+
+> **兼容性说明**：OpenClaw 使用与 Claude Code 相同的 SKILL.md 格式，理论上完全兼容。
 
 ```bash
-# 初始化技能扫描
-cd ~/.claude/skills/skill-hub
-python scripts/scan_skills.py
+# 1. 确认 OpenClaw 技能目录位置（通常是以下之一）
+# - ~/.openclaw/skills/
+# - ~/.config/openclaw/skills/
+# 请根据你的 OpenClaw 版本确认实际路径
+
+# 2. 克隆到技能目录
+git clone https://github.com/xishaochen/skill-hub.git ~/.openclaw/skills/skill-hub
+
+# 3. 修改配置文件中的路径（如果需要）
+# 编辑 scripts/settings.py，将 USER_SKILLS_DIR 改为你的 OpenClaw 技能目录
+
+# 4. 初始化技能扫描
+cd ~/.openclaw/skills/skill-hub && python scripts/scan_skills.py
 ```
+
+<details>
+<summary>🔧 OpenClaw 路径适配</summary>
+
+如果你的 OpenClaw 使用不同的目录结构，需要修改 `scripts/settings.py`：
+
+```python
+# 原配置（Claude Code）
+USER_SKILLS_DIR = Path.home() / ".claude" / "skills"
+
+# 修改为（OpenClaw 示例）
+USER_SKILLS_DIR = Path.home() / ".openclaw" / "skills"
+```
+
+</details>
 
 ---
 
